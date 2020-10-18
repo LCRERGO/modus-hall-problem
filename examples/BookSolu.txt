@@ -1,0 +1,65 @@
+
+//variaveis utilizadas pelo autor
+
+heathens = 0;
+prudes = 0;
+status = ’neutral ’;
+mutex = Semaphore(1);
+heathenTurn = Semaphore(1);
+prudeTurn = Semaphore(1);
+heathenQueue = Semaphore(0);
+prudeQueue = Semaphore(0);
+
+
+/* EXPLICAÇÃO:
+heathens and prudesare counters,
+and status records the status of the field, which can be ‘neutral’, ‘heathens rule’, ‘prudes rule’, ‘transition to hea-thens’ or ‘transition to prudes’.
+All three are protected by mutex in the usual score board pattern.
+heathenTurn and prudeTurn control access to the field so that we can bar one side or the other during a transition.
+heathenQueue and prudeQueue are where threads wait after checking in and before taking the field.
+*/
+
+//---------------CODE FOR HEATHENS:---------------------
+
+heathenTurn.wait()
+heathenTurn.wait()
+
+mutex.wait()
+heathens++
+
+if status == 'neutral':
+    status = ’heathens  rule ’
+    mutex.signal ()
+elif  status  == ’prudes  rule ’:
+    if  heathens  > prudes:
+        status = ’transition  to heathens ’
+        prudeTurn.wait()
+    mutex.signal ()
+    heathenQueue.wait()
+elif  status  == ’transition  to heathens ’:
+    mutex.signal ()
+    heathenQueue.wait()
+
+else:
+    mutex.signal ()
+
+# cross  the  field
+
+mutex.wait()
+heathens --
+
+if  heathens  == 0:
+    if  status  == ’transition  to prudes ’:
+        prudeTurn.signal ()
+    if  prudes:
+        prudeQueue.signal(prudes)
+        status = ’prudes  rule ’
+    else:
+        status = ’neutral ’
+    
+if  status  == ’heathens  rule ’:
+    if  prudes  > heathens:
+        status = ’transition  to prudes ’
+        heathenTurn.wait()
+        
+mutex.signal()
