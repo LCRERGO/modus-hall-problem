@@ -24,16 +24,17 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 sem_t heathens_turn;
 sem_t prudes_turn;
 
-void *
-prudes(void *arg)
+void
+prudes(void)
 {
     pthread_mutex_lock(&mutex);
-    sleep(1);
 
     prudes_counter++;
+    printf("\n%sPRUDES ARRIVED%s\nPrudes: %d\nHeathens: %d",
+            "\033[31;1m", "\033[00m",
+            prudes_counter, heathens_counter);
     pthread_mutex_unlock(&mutex);
 
-    sleep(1);
     sem_wait(&prudes_turn);
     pthread_mutex_lock(&mutex);
     prudes_counter--;
@@ -46,20 +47,23 @@ prudes(void *arg)
     else
         sem_post(&prudes_turn);
 
-    pthread_mutex_unlock(&mutex);
+    printf("\n%sPRUDES FINISHED%s\nPrudes: %d\nHeathens: %d",
+            "\033[31;1m", "\033[00m",
+            prudes_counter, heathens_counter);
 
-    return NULL;
+    pthread_mutex_unlock(&mutex);
 }
 
-void *
-heathens(void *arg)
+void
+heathens(void)
 {
     pthread_mutex_lock(&mutex);
-    sleep(1);
 
     heathens_counter++;
+    printf("\n%sHEATHENS ARRIVED%s\nPrudes: %d\nHeathens: %d",
+            "\033[31;1m", "\033[00m",
+            prudes_counter, heathens_counter);
     pthread_mutex_unlock(&mutex);
-    sleep(1);
 
     sem_wait(&heathens_turn);
 
@@ -74,9 +78,11 @@ heathens(void *arg)
     else
         sem_post(&heathens_turn);
 
-    pthread_mutex_unlock(&mutex);
+    printf("\n%sHEATHENS FINISHED%s\nPrudes: %d\nHeathens: %d",
+            "\033[31;1m", "\033[00m",
+            prudes_counter, heathens_counter);
 
-    return NULL;
+    pthread_mutex_unlock(&mutex);
 }
 
 void

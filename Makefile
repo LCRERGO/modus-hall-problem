@@ -1,5 +1,5 @@
 CC = clang
-CFLAGS = -O2 -Wall -pedantic -pthread
+CFLAGS = -Wall -pedantic -pthread -g
 
 modus_hall: modus_hall.c
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
