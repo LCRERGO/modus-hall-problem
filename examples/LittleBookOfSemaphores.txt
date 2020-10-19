@@ -1,0 +1,15 @@
+EXPLICAÇÃO DO LIVRO
+
+--lITTLE BOOK OF SEMAPHORES--
+
+The Modus Hall ProblemThis problem was written by Nathan Karst, one of the Olin students living inModus Hall2during the winter of 2005.
+
+"
+After a particularly heavy snowfall this winter, the denizens ofModus Hall created a trench-like path between their cardboard shan-tytown and the rest of campus. Every day some of the residentswalkto and from class, food and civilization via the path; we willignorethe indolent students who chose daily to drive to Tier 3. We will alsoignore the direction in which pedestrians are traveling. For some un-known reason, students living in West Hall would occasionally findit necessary to venture to the Mods.
+
+Unfortunately, the path is not wide enough to allow two people towalk side-by-side. If two Mods persons meet at some point on thepath, one will gladly step aside into the neck high drift to accom-modate the other.  A similar situation will occur if two ResHallinhabitants cross paths.  If a Mods heathen and a ResHall prudemeet, however, a violent skirmish will ensue with the victors deter-mined solely by strength of numbers; that is, the faction with thelarger population will force the other to wait.
+"
+
+This is similar to the Baboon Crossing problem (in more ways than one),with the added twist that control of the critical section is determined by majorityrule. This has the potential to be an efficient and starvation-free solution to thecategorical exclusion problem.
+
+Starvation is avoided because while one faction controls the critical section,members of the other faction accumulate in queue until they achieve a majority.Then they can bar new opponents from entering while they waitfor the criticalsection to clear. I expect this solution to be efficient because it will tend tomove threads through in batches, allowing maximum concurrency in the criticalsection.Puzzle: write code that implements categorical exclusion with majority rule.
