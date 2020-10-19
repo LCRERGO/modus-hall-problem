@@ -115,9 +115,9 @@ run()
 
     if (num_heathens >= num_prudes) {
         for (i = 0; i < num_prudes; i++) {
-            pthread_create(&tid_prudes[i], NULL, &heathens, NULL);
+            pthread_create(&tid_prudes[i], NULL, (void *(*)(void *))&heathens, NULL);
             if (i < num_prudes)
-                pthread_create(&tid_prudes[i], NULL, &prudes, NULL);
+                pthread_create(&tid_prudes[i], NULL, (void *(*)(void *))&prudes, NULL);
         }
 
 
@@ -128,9 +128,9 @@ run()
         }
     } else {
         for(i = 0; i < num_prudes; i++) {
-            pthread_create(&tid_prudes[i], NULL, &prudes, NULL);
+            pthread_create(&tid_prudes[i], NULL, (void *(*)(void *))&prudes, NULL);
             if (i < num_heathens)
-                pthread_create(&tid_heathens[i], NULL, &heathens, NULL);
+                pthread_create(&tid_heathens[i], NULL, (void *(*)(void *))&heathens, NULL);
         }
 
         for (i = 0; i < num_prudes; i++) {
