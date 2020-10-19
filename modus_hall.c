@@ -14,7 +14,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <semaphore.h>
+#include <time.h>
 #include <unistd.h>
+
+#include "lcg.h"
 
 int heathens_counter = 0;
 int prudes_counter = 0;
@@ -31,7 +34,7 @@ prudes(void)
 
     prudes_counter++;
     printf("\n%sPRUDES ARRIVED%s\nPrudes: %d\nHeathens: %d",
-            "\033[31;1m", "\033[00m",
+            "\033[32;1m", "\033[00m",
             prudes_counter, heathens_counter);
     pthread_mutex_unlock(&mutex);
 
@@ -48,7 +51,7 @@ prudes(void)
         sem_post(&prudes_turn);
 
     printf("\n%sPRUDES FINISHED%s\nPrudes: %d\nHeathens: %d",
-            "\033[31;1m", "\033[00m",
+            "\033[32;1m", "\033[00m",
             prudes_counter, heathens_counter);
 
     pthread_mutex_unlock(&mutex);
@@ -93,8 +96,8 @@ run()
     pthread_t *tid_prudes, *tid_heathens;
 
 
-    num_heathens = 20;
-    num_prudes = 20;
+    num_heathens = lcg_rand() & 0x51;
+    num_prudes = lcg_rand() & 0x51;
 
     if (num_heathens > num_prudes)
         start = 1;
@@ -141,6 +144,7 @@ run()
 int
 main(int argc, char *argv[])
 {
+    lcg_srand(time(NULL));    
     run();
 
     return 0;

@@ -2,6 +2,10 @@
 
 #include "lcg.h"
 
+const uint32_t RNG_a = 1664525;
+const uint32_t RNG_c = 1013904223;
+uint32_t RNG_state;
+
 void
 lcg_srand(uint32_t i)
 {
