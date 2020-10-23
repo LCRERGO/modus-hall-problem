@@ -17,8 +17,8 @@ To build simply run make on the directory. e.g.:
 ```shell
 $ make
 ```
-By default it uses clang as the compiler to use another compiler such as gcc,
+By default it uses gcc as the compiler to use another compiler such as clang,
 set the CC variable before compiling, as stated in:
 ```shell
-$ CC=gcc make
+$ CC=clang make
 ```
