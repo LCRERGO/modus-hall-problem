@@ -1,2 +1,4 @@
+# Git ignore file
 modus_hall
+busywait_modus_hall
 *.o
