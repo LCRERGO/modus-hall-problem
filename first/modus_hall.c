@@ -99,6 +99,10 @@ run()
     num_heathens = lcg_rand() & 0x51;
     num_prudes = lcg_rand() & 0x51;
 
+    printf("%s\n%s %d %s\n%s %d%s\n", "Initial Number", 
+            "\033[32;1mPRUDES:",  num_prudes, "\033[00m",
+            "\033[31;1mHEATHENS:", num_heathens, "\033[00m"); 
+
     if (num_heathens > num_prudes)
         start = 1;
     else
