@@ -14,7 +14,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <semaphore.h>
+#include <time.h>
 #include <unistd.h>
+
+#include "lcg.h"
 
 int heathens_counter = 0;
 int prudes_counter = 0;
@@ -66,7 +69,7 @@ void heathens(void)
     heathens_counter++;
 
     printf("\n%sHEATHENS ARRIVED%s\nPrudes: %d\nHeathens: %d",
-           "\033[31;1m", "\033[00m",
+           "\033[32;1m", "\033[00m",
            prudes_counter, heathens_counter);
     pthread_mutex_unlock(&mutex);
 
@@ -91,7 +94,7 @@ void heathens(void)
         heathens_turn++;
     }
     printf("\n%sHEATHENS FINISHED%s\nPrudes: %d\nHeathens: %d",
-           "\033[31;1m", "\033[00m",
+           "\033[32;1m", "\033[00m",
            prudes_counter, heathens_counter);
     pthread_mutex_unlock(&mutex);
 }
@@ -102,8 +105,12 @@ void run()
     int num_heathens, num_prudes, start;
     pthread_t *tid_prudes, *tid_heathens;
 
-    num_heathens = 2;
-    num_prudes = 2;
+    num_heathens = lcg_rand() & 0x51;
+    num_prudes = lcg_rand() & 0x51;
+
+    printf("%s\n%s %d %s\n%s %d%s\n", "Initial Number",
+	"\033[32;1mPRUDES:",  num_prudes, "\033[00m",
+	"\033[31;1mHEATHENS:", num_heathens, "\033[00m");
 
     if (num_heathens > num_prudes)
         start = 1;
@@ -149,6 +156,7 @@ void run()
 
 int main(int argc, char *argv[])
 {
+    lcg_srand(time(NULL));
     run();
 
     return 0;
